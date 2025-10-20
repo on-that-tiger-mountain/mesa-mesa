@@ -45,6 +45,7 @@
 #include "util/u_upload_mgr.h"
 #include "util/os_file.h"
 #include "frontend/winsys_handle.h"
+#include "frontend/sw_winsys.h"
 
 #if !defined(__APPLE__)
 #define ZINK_USE_DMABUF
@@ -1485,6 +1486,16 @@ resource_create(struct pipe_screen *pscreen,
       res->base.b.bind |= PIPE_BIND_DISPLAY_TARGET;
       res->linear = false;
       res->swapchain = true;
+   } else if (screen->winsys && (templ->bind & PIPE_BIND_DISPLAY_TARGET)) {
+      struct sw_winsys *winsys = screen->winsys;
+      res->dt = winsys->displaytarget_create(winsys,
+                                             res->base.b.bind,
+                                             res->base.b.format,
+                                             templ->width0,
+                                             templ->height0,
+                                             64, NULL,
+                                             &res->dt_stride);
+      res->base.b.bind |= PIPE_BIND_DISPLAY_TARGET;
    }
 
    if (!res->obj->host_visible)

@@ -1335,6 +1335,7 @@ struct zink_resource {
 
    bool copies_warned;
    bool swapchain;
+   struct sw_displaytarget *dt;
    bool dmabuf;
    unsigned dt_stride;
 
@@ -1394,6 +1395,7 @@ struct zink_screen {
    simple_mtx_t dt_lock;
 
    bool device_lost;
+   struct sw_winsys *winsys;
    int drm_fd;
 
    struct slab_parent_pool transfer_pool;
