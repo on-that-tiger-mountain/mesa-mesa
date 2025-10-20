@@ -20,6 +20,10 @@
 #include "llvmpipe/lp_public.h"
 #endif
 
+#ifdef GALLIUM_ZINK
+#include "zink/zink_public.h"
+#endif
+
 #ifdef GALLIUM_VIRGL
 #include "virgl/virgl_public.h"
 #include "virgl/vtest/virgl_vtest_public.h"
@@ -51,7 +55,7 @@ sw_screen_create_named(struct sw_winsys *winsys, const char *driver)
    }
 #endif
 
-#if defined(GALLIUM_SOFTPIPE)
+#if defined(GALLIUM_SOFTPIPE) && !defined(GALLIUM_ZINK)
    if (screen == NULL && strcmp(driver, "softpipe") == 0)
       screen = softpipe_create_screen(winsys);
 #endif

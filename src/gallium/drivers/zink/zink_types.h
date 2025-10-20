@@ -1176,6 +1176,7 @@ struct zink_resource {
    };
 
    bool swapchain;
+   struct sw_displaytarget *dt;
    bool dmabuf_acquire;
    bool dmabuf;
    unsigned dt_stride;
@@ -1230,6 +1231,7 @@ struct zink_screen {
    simple_mtx_t dt_lock;
 
    bool device_lost;
+   struct sw_winsys *winsys;
    int drm_fd;
 
    struct hash_table framebuffer_cache;
